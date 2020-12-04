@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import ui.ConsoleUI;
 
-public class Stepdefs {
+public class LisaysStepdefs {
 
     ConsoleIO mockIO;
     LukuvinkkiDao mockLukuvinkkiDao;
