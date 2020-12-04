@@ -2,11 +2,14 @@ package cucumber;
 
 import dao.LukuvinkkiDao;
 import domain.Kirja;
+import domain.Lukuvinkki;
 import io.ConsoleIO;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -19,26 +22,27 @@ public class LisaysStepdefs {
 
     ConsoleIO mockIO;
     LukuvinkkiDao mockLukuvinkkiDao;
-    Kirja vinkki;
     ConsoleUI ui;
+    String otsikko;
     
-    String addNumber;
-    String exitNumber;
+    String addCommand;
+    String exitCommand;
 
     @Given("konsoli pyytaa lukuvinkin otsikkoa")
-    public void konsoliPyytaaOtsikkoa() {
+    public void konsoliPyytaaOtsikkoa() throws IOException {
         mockIO = mock(ConsoleIO.class);
         mockLukuvinkkiDao = mock(LukuvinkkiDao.class);
-        vinkki = new Kirja("Testiotsikko");
+        mockLukuvinkkiDao.useTestFile();
         ui = new ConsoleUI(mockIO, mockLukuvinkkiDao);
         
-        addNumber = "0";
-        exitNumber = "999";
+        addCommand = "u";
+        exitCommand = "l";
     }
 
     
     @When("kelvollinen otsikko {string} syotetaan konsoliin") public void
     kelvollinenOtsikkoSyotetaan(String otsikko) throws IOException {
+        this.otsikko = otsikko;
         otsikkoSyotetaan(otsikko); 
     }
      
@@ -49,14 +53,10 @@ public class LisaysStepdefs {
     
     @Then("konsoli vastaa halutulla viestilla")
     public void konsoliVastaaViestilla() {
-        verify(mockIO).printOutput(eq(vinkki.changeTimeToString(vinkki.getAddDateTime()) + " Luotiin lukuvinkki: " + "Testiotsikko" + " URL: NIL"));
+        LocalDateTime timeNow = LocalDateTime.now();
+        String timeNowString = changeTimeToString(timeNow);
+        verify(mockIO).printOutput(eq(timeNowString + " tallennettiin lukuvinkki: " + otsikko + " URL: NIL\n"));
     }
-    /*
-     * @Then("lukuvinkki tallentuu tiedostoon") public void
-     * lukuvinkkiTallentuuTiedostoon() throws IOException {
-     * mockLukuvinkkiDao.saveToFile(new Kirja(anyString()));
-     * verify(mockLukuvinkkiDao, times(1)).readFromFile(); }
-     */
     
      @Then("lukuvinkki ei tallennu tiedostoon") public void
      lukuvinkkiEiTallennuTiedostoon() throws IOException {
@@ -65,11 +65,16 @@ public class LisaysStepdefs {
      
 
     public void otsikkoSyotetaan(String otsikko) throws IOException {
-        when(mockIO.readInput("\nValitse vinkki numerolla tai kirjoita teksti hakua varten:")).thenReturn(addNumber, exitNumber);
-        when(mockIO.readInput("\nAnna lukuvinkin otsikko: ")).thenReturn(otsikko);
+        when(mockIO.readInput("(L)opeta (K)aikki (U)usi tai \nkirjoita useampi merkki hakua varten")).thenReturn(addCommand, exitCommand);
+        when(mockIO.readInput("Anna lukuvinkin otsikko: ")).thenReturn(otsikko);
+        when(mockIO.readInput("Anna lukuvinkin linkki: ")).thenReturn("");
         
         ui.run();
       
+    }
+    
+    public String changeTimeToString(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"));
     }
      
 

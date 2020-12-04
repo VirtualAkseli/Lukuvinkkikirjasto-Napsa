@@ -34,11 +34,13 @@ public class ConsoleUI {
         while (true) {
             // Lue syöte. Teksti tarkoittaa hakua, numero jotain toimintoa
             syote = console.readInput("(L)opeta (K)aikki (U)usi tai \nkirjoita useampi merkki hakua varten");
+            System.out.println(syote);
             int numero = -1;
             boolean haku = false;
             try {
                 numero = Integer.parseInt(syote) - 1; // Valinnat alkavat ykkösestä
             } catch (Exception e) {
+                System.out.println(syote);
                 syote = syote.toLowerCase().trim();
                 if (syote.length() > 1) {
                     haku = true;

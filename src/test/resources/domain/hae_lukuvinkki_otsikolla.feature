@@ -1,14 +1,14 @@
 Feature: kayttaja voi hakea lukuvinkin otsikon perusteella
 
     Scenario: kun kayttaja hakee olemassaolevaa lukuvinkkia sen koko nimella, lukuvinkki loytyy
-        #Given on olemassa lukuvinkki nimelta "Effective Java"
-        #When kayttaja hakee lukuvinkkia hakusanalla "Effective Java"
-        #Then lukuvinkki "Effective Java" naytetaan konsolissa
+        Given on olemassa lukuvinkki nimelta "Effective Java"
+        When kayttaja hakee lukuvinkkia hakusanalla "Effective Java"
+        Then lukuvinkki "Effective Java" naytetaan konsolissa
 
     Scenario: kun kayttaja hakee olemassaolevaa lukuvinkkia osalla sen nimesta, lukuvinkki loytyy
-        #Given on olemassa lukuvinkki nimelta "Effective Java"
-        #When kayttaja hakee lukuvinkkia hakusanalla "Eff"
-        #Then lukuvinkki "Effective Java" naytetaan konsolissa
+        Given on olemassa lukuvinkki nimelta "Effective Java"
+        When kayttaja hakee lukuvinkkia hakusanalla "Eff"
+        Then lukuvinkki "Effective Java" naytetaan konsolissa
 
     Scenario: haulla loytyvat kaikki lukuvinkit, joiden otsikossa on haettu merkkijono
         #Given on olemassa lukuvinkit nimelta "Effective Java" ja "Core Java 2"
