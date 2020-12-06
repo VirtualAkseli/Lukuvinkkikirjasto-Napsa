@@ -16,6 +16,7 @@ public class LukuvinkkiService {
     private List<Lukuvinkki> vinkit;
     private final LukuvinkkiDao dao;
     
+    
     public LukuvinkkiService(LukuvinkkiDao dao) {
         this.dao = dao;
         this.vinkit = new ArrayList<>();
