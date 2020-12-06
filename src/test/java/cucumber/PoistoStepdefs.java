@@ -1,6 +1,7 @@
 package cucumber;
 
 import dao.LukuvinkkiDao;
+import domain.Lukuvinkki;
 import io.ConsoleIO;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -12,17 +13,18 @@ import ui.ConsoleUI;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
-public class ListausStepdefs {
-
+public class PoistoStepdefs {
+    
     ConsoleIO mockIO;
     LukuvinkkiDao mockDao;
     ConsoleUI ui;
     UiValues vals;
-
+    String chooseFirst;
+    
     @Before
     public void setUp() throws IOException {
         mockIO = mock(ConsoleIO.class);
@@ -30,30 +32,29 @@ public class ListausStepdefs {
         mockDao.useTestFile();
         ui = new ConsoleUI(mockIO, mockDao);
         vals = new UiValues();
+
+        //choose first element is list vinkit
+        chooseFirst = "1";
     }
 
-    @Given("ei ole olemassa yhtaan lukuvinkkia")
-    public void eiOleLukuvinkkeja() {
+    @When("kayttaja poistaa lukuvinkin {string} poistokomennolla")
+    public void kayttajaPoistaaLukuvinkin(String otsikko) throws IOException {
 
-    }
-
-    @When("kayttaja listaa lukuvinkit listauskomennolla")
-    public void lukuvinkitListataan() throws IOException {
-
-        when(mockIO.readInput(vals.mainMenu)).thenReturn(vals.kaikkiVal, vals.lopetusVal);
+        when(mockIO.readInput(vals.mainMenu)).thenReturn(chooseFirst, vals.lopetusVal);
+        when(mockIO.readInput(vals.naytaLukuvinkkiMenu)).thenReturn(vals.poistoVal);
 
         ui.run();
 
     }
 
-    @Then("lukuvinkki {string} naytetaan listassa")
-    public void lukuvinkkiNaytetaanListassa(String otsikko) throws IOException {
+    @Then("lukuvinkki {string} poistetaan")
+    public void lukuvinkkiPoistetaan(String otsikko) {
 
-        String expected = otsikko;
+        String expected = "Poistettiin: " + otsikko;
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(1)).printOutput(captor.capture());
+        verify(mockIO, times(4)).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 

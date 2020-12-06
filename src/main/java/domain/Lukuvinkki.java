@@ -1,3 +1,4 @@
+
 package domain;
 
 import java.time.LocalDateTime;
@@ -7,27 +8,41 @@ import com.google.gson.InstanceCreator;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
 
     private String label;
     // lukuvinkin tyyppi esim. kirja
     private String type;
-    // esimerkkimuuttuja lisäyspäivämäärälle
-    private LocalDateTime addDateTime;
     private String link;
     private URL linkki;
+
+
+    private ArrayList<String> tagit;
+
+
+    private LocalDateTime addDateTime;
+    private LocalDateTime modifiedDateTime;
+
 
     public Lukuvinkki(String label) {
         this.label = label;
         this.addDateTime = LocalDateTime.now();
+        this.modifiedDateTime = this.addDateTime;
         this.link = "NIL";
         this.linkki = null;
+        this.tagit = new ArrayList<>();
 
     }
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public void setModifiedDateTime() {
+        this.modifiedDateTime = LocalDateTime.now();
     }
 
     public String getLabel() {
@@ -45,7 +60,7 @@ public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
     public void setLink(String link) {
         this.link = link;
     }
-    
+
     public void setLinkki(URL linkki) {
         this.linkki = linkki;
     }
@@ -53,9 +68,20 @@ public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
     public String getLink() {
         return this.link;
     }
-    
+
     public URL getLinkki() {
         return this.linkki;
+    }
+
+    public void addTagi(String tagi) {
+        if (!this.tagit.contains(tagi)) {
+            this.tagit.add(tagi);
+        }
+        //this.tagit.add(tagi);
+    }
+
+    public List getTagit() {
+        return this.tagit;
     }
 
     public LocalDateTime getAddDateTime() {
@@ -63,15 +89,23 @@ public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
     }
 
     public String getAddTime() {
-        return this.changeTimeToString(addDateTime);
+        return this.changeTimeToString(this.getAddDateTime());
+    }
+
+    public LocalDateTime getModifiedDateTime() {
+        return this.modifiedDateTime;
+    }
+
+    public String getModifiedTime() {
+        return this.changeTimeToString(this.getModifiedDateTime());
     }
 
     @Override
     public String toString() {
         if (this.linkki == null) {
-            return this.label + " URL: NIL";
+            return this.label + " URL: NIL" + ", tägit: " + this.tagit;
         } else {
-            return this.label + " URL: " + this.linkki;
+            return this.label + " URL: " + this.linkki + ", tägit: " + this.tagit;
         }
         //return this.label + " URL: " + this.link;
     }
@@ -84,6 +118,7 @@ public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
     public String changeTimeToString(LocalDateTime time) {
         return this.addDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"));
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -107,7 +142,5 @@ public class Lukuvinkki implements InstanceCreator<Lukuvinkki> {
         }
         return true;
     }
-    
-    
 
 }
