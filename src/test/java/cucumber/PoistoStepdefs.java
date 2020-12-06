@@ -58,6 +58,8 @@ public class PoistoStepdefs {
 
         List<String> values = captor.getAllValues();
 
+        //tässä values kuuluisi sisältää printOutputin argumentit jotka sitten tarkistetaan, mutta ei sisällä mitään
+
         boolean expectedwasFound = false;
         for (String val : values) {
             if (val.contains(expected)) {
