@@ -3,6 +3,7 @@ package ui;
 import domain.Kirja;
 import domain.Lukuvinkki;
 import dao.LukuvinkkiDao;
+import domain.LukuvinkkiService;
 import domain.Etsija;
 import io.ConsoleIO;
 import java.io.*;
@@ -13,27 +14,20 @@ import java.util.*;
 public class ConsoleUI {
 
     private final ConsoleIO console;
-    private final LukuvinkkiDao dao;
     private List<Lukuvinkki> vinkit;
+    private LukuvinkkiService service;
 
-    public ConsoleUI(ConsoleIO console, LukuvinkkiDao dao) {
+    public ConsoleUI(ConsoleIO console, LukuvinkkiService service) {
         this.console = console;
-        this.dao = dao;
+        this.service = service;
         //this.vinkit = new ArrayList<>();
     }
 
-    private void lueVinkit() throws IOException, FileNotFoundException {
-        try {
-            vinkit = dao.readFromFile();
-        } catch (Exception e) {
-            vinkit = new ArrayList<>();
-        }
-    }
 
     public void run() throws IOException, FileNotFoundException {
         String syote;
 
-        lueVinkit();
+        this.vinkit = service.lueVinkit();
         while (true) {
             // Lue syöte. Teksti tarkoittaa hakua, numero jotain toimintoa
             syote = console.readInput("(L)opeta (K)aikki (U)usi tai \nkirjoita useampi merkki hakua varten");
@@ -49,8 +43,8 @@ public class ConsoleUI {
             }
 
             // Toiminnon valinta. Virheelliset putoavat läpi.
-            if (numero >= 0 && numero < vinkit.size()) {
-                nayta(vinkit.get(numero));
+            if (numero >= 0 && numero < service.getVinkit().size()) {
+                nayta(service.getVinkit().get(numero));
             } else if (haku) {
                 Etsija e = new Etsija(vinkit);
                 List<Lukuvinkki> tulos = e.etsiVinkinNimella(syote);
@@ -64,10 +58,10 @@ public class ConsoleUI {
                 }
             } else if ("u".equals(syote)) { // Lisäys
                 Kirja uusi = new Kirja("");
-                vinkit.add(uusi);
+                service.getVinkit().add(uusi);
                 muokkaa(uusi);
             } else if ("k".equals(syote)) { // Näytä kaikki
-                lueVinkit();
+                this.vinkit = service.lueVinkit();
                 lista();
             } else if ("l".equals(syote)) { // Lopetus
                 break;
@@ -134,7 +128,7 @@ public class ConsoleUI {
 // Tässä pitää päivittää v:n muokkauspäiväys
 /////////////////////////////////////////////////////////////////////////////
   
-            dao.saveListToFile(vinkit);
+            service.saveListToFile(vinkit);
             console.printOutput(v.getAddTime() + " tallennettiin lukuvinkki: " + v + "\n");
         }
     }
@@ -159,8 +153,8 @@ public class ConsoleUI {
     }
 
     public void poista(Lukuvinkki v) throws IOException, FileNotFoundException {
-        vinkit.remove(v);
-        dao.deleteFromFile(v);
+        service.getVinkit().remove(v);
+        service.deleteFromFile(v);
         console.printOutput("Poistettiin: " + v.getLabel() + "\n");
     }
 
