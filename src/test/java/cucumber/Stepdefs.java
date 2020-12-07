@@ -19,10 +19,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.junit.After;
 import org.mockito.ArgumentCaptor;
@@ -144,7 +141,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(3)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -167,7 +164,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(5)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -193,7 +190,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(1)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -231,7 +228,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(3)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -254,7 +251,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(5)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -280,7 +277,7 @@ public class Stepdefs {
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 
-        verify(mockIO, times(1)).printOutput(captor.capture());
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
 
         List<String> values = captor.getAllValues();
 
@@ -311,12 +308,13 @@ public class Stepdefs {
     @Then("lukuvinkki {string} poistetaan")
     public void lukuvinkkiPoistetaan(String otsikko) {
 
-        ArgumentCaptor<String> poistoCaptor = ArgumentCaptor.forClass(String.class);
-        verify(mockIO, times(2)).printOutput(poistoCaptor.capture());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(mockIO, atLeastOnce()).printOutput(captor.capture());
+
 
         String expected = "Poistettiin: " + otsikko;
 
-        List<String> values = poistoCaptor.getAllValues();
+        List<String> values = captor.getAllValues();
 
         boolean expectedwasFound = false;
         for (String val : values) {
@@ -328,5 +326,5 @@ public class Stepdefs {
         assertTrue(expectedwasFound);
 
     }
-    
+
 }
