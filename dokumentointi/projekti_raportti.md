@@ -1,4 +1,13 @@
 # Raportti
+
+## Projektiin osallistuneet
+
+- Akseli Nurmi
+- Antti Kantola
+- Susanna Muhli
+- Petri Riihikallio
+- Niko Nieminen
+
 ## Sprinttien aikana kohdatut ongelmat (prosessiin-, projektityöskentelyyn- ja teknisiin asioihin liittyvät)
 ### Sprint 1
 Tiimissä kukaan ei tuntenut toisiaan entuudestaan, joten osaamisten, mielenkiinnon kohteiden ja ajankäytön mahdollisuuksien kartoittamiseen meni alussa aikaa. Seuraavaksi piti sopia yhteisistä työtavoista ja yhteydenpitotavoista. Oma aikansa meni projektin vaatiman infran pystyttämiseen GitHubissa, eri keskustelualustoilla ja Java-Gradle-ympäristöön.
