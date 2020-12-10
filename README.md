@@ -4,6 +4,10 @@
 
 Ohtu 2020 miniprojekti.
 
+## Raportti projektin kulusta
+
+[Linkki raporttiin](https://github.com/VirtualAkseli/Lukuvinkkikirjasto-Napsa/blob/main/dokumentointi/projekti_raportti.md)
+
 ## Releaset
 
 [Sprint 3 Release](https://github.com/VirtualAkseli/Lukuvinkkikirjasto-Napsa/releases/tag/sprint3)
